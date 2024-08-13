@@ -617,11 +617,14 @@ struct json_deserializer
                 auto ci = n.first_child;
 
                 // collection is string-like
-                if (n.is_string() && std::is_same_v<element_t, char>)
+                if (n.is_string())
                 {
-                    for (auto c : n.token)
-                        cc::collection_add(v, c);
-                    return;
+                    if constexpr (std::is_same_v<element_t, char>)
+                    {
+                        for (auto c : n.get_string())
+                            cc::collection_add(v, c);
+                        return;
+                    }
                 }
 
                 while (ci > 0)
