@@ -617,9 +617,9 @@ struct json_deserializer
                 auto ci = n.first_child;
 
                 // collection is string-like
-                if(n.is_string() && std::is_same_v<element_t, char>)
+                if (n.is_string() && std::is_same_v<element_t, char>)
                 {
-                    for(auto c : n.token)
+                    for (auto c : n.token)
                         cc::collection_add(v, c);
                     return;
                 }
@@ -676,7 +676,7 @@ struct json_deserializer
             static_assert(cc::always_false<Obj>, "obj type is not supported for deserialization");
     }
 };
-}
+} // namespace detail
 
 template <class Obj>
 void write(cc::string_stream_ref output, Obj const& obj, write_config const& cfg)
@@ -698,4 +698,4 @@ void read_to(Obj& obj, cc::string_view json, read_config const& cfg, error_handl
     detail::json_deserializer{cc::as_byte_span(json), cfg, on_error, jref}.deserialize(jref.root(), obj);
 }
 
-}
+} // namespace babel::json
