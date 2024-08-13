@@ -615,6 +615,14 @@ struct json_deserializer
                 // TODO: option to preserve prev data?
                 v = {};
                 auto ci = n.first_child;
+
+                // collection is string-like
+                if(ci == 0 && std::is_same_v<element_t, char>)
+                {
+                    for(auto c : n.token)
+                        cc::collection_add(v, c);
+                }
+
                 while (ci > 0)
                 {
                     auto const& cvalue = jref.nodes[ci];
